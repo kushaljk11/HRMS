@@ -9,7 +9,9 @@ export const verifyToken = (req, res, next) => {
 
     const token = authHeader.split(" ")[1];
 
-    JWT.verify(token, process.env.JWT, (err, decoded) => {
+    
+
+    JWT.verify(token, process.env.JWT_SECRET, (err, decoded) => {
         if(err){
             return res.status(401).json("Forbidden or invalid token");
         }
@@ -19,42 +21,15 @@ export const verifyToken = (req, res, next) => {
     });
 };
 
-export const verifyUser = (req, res, next) => {
-    verifyToken(req, res, () => {
-        if(req.user.role === "admin" || req.user.role === "employee" || req.user.role === "manager"){
-            next();
-        } else {
-            return res.status(403).json("You are not authorize");
-        }
-    });
-};
+export const authorizationRoles = (...roles) => {
+    return (req, res, next) => {
+        console.log("Allowed roles:", roles);
+        console.log("User role:", req.user?.role);
 
-export const verifyAdmin = (req, res, next) => {
-    verifyToken(req, res, () => {
-        if(req.user.role === "admin"){
-            next();
-        } else {
-            return res.status(403).json("You can goooo");
+        if (!roles.includes(req.user?.role)) {
+            return res.status(403).json({ message: "Forbidden" });
         }
-    });
-};
 
-export const verifyEmployee = (req, res, next) => {
-    verifyToken(req, res, () => {
-        if(req.user.role === "employee"){
-            next();
-        } else {
-            return res.status(403).json("You are not authorize");
-        }
-    });
-};
-
-export const verifyManager = (req, res, next) => {
-    verifyToken(req, res, () => {
-        if(req.user.role === "manager"){
-            next();
-        } else {
-            return res.status(403).json("You are not authorize");
-        }
-    });
+        next();
+    };
 };

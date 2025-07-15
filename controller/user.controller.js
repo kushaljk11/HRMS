@@ -1,5 +1,7 @@
-import {User} from '../models/user.js';
+import { verifyToken } from '../middleware/verify.token.js';
+import User from '../models/user.js';
 import bcrypt from 'bcrypt';
+
 
 export const createUser = async (req, res = response) => {
     try {
@@ -45,12 +47,14 @@ export const createUser = async (req, res = response) => {
         
         res.status(201).json({
             message: "User created successfully",
+            
             user: userResponse
         });
     } catch (error) {
         res.status(500).json({
             message: "Internal server error",
             error: error.message
+
         })
     }
 };
