@@ -14,7 +14,7 @@ const app = express()
 dotenv.config();
 
 app.use(express.json())
-const PORT = process.env.PORT || 3000
+const PORT = process.env.PORT || 3000;
 connectDB().then(() => {
   console.log('Database is connected successfully')
 }).catch(err => {
@@ -28,6 +28,10 @@ app.use('/api', userDepartmentRouter)
 app.use('/api', userLeaveRequestRouter)
 app.use('/api', userAttendanceRouter)
 app.use('/api',authRouter)
+
+app.get("/hello", (req, res) => {
+  res.send("Hello World");
+})
 
 
 app.post('/send-email', async (req, res) => {
