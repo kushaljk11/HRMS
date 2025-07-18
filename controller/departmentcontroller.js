@@ -7,11 +7,6 @@ export const createDepartment = async (req, res) => {
       return res.status(400).json({ message: "All fields are required!" });
     }
     
-    // const existingDepartment = await Department.findOne({ name });
-    // if (existingDepartment) {
-    //   return res.status(400).json({ message: "Department already exists!" });
-    // }
-
     const newDepartment = new Department({ name, description });
     await newDepartment.save();
     
@@ -57,7 +52,7 @@ export const updateDepartment = async (req, res) => {
     }, { new: true });
 
     if (!updatedDepartment) {
-      return res.status(404).json({ message: "Department not found!" });
+      return res.status(404).json({ message: "Department is not found!" });
     }
 
     return res.status(200).json({ message: "Department updated successfully!", department: updatedDepartment });
@@ -73,7 +68,7 @@ export const deleteDepartment = async (req, res) => {
     const deletedDepartment = await Department.findByIdAndDelete(departmentId);
     
     if (!deletedDepartment) {
-      return res.status(404).json({ message: "Department not found!" });
+      return res.status(404).json({ message: "Department is not found!" });
     }
     
     return res.status(200).json({ message: "Department deleted successfully!" });
