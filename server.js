@@ -16,9 +16,9 @@ dotenv.config();
 app.use(express.json())
 const PORT = process.env.PORT || 3000
 connectDB().then(() => {
-  console.log('Database connected successfully')
+  console.log('Database is connected successfully')
 }).catch(err => {
-  console.error('Database connection failed:', err)
+  console.error('Database connection failed!!:', err)
 })
 
 
@@ -32,7 +32,6 @@ app.use('/api',authRouter)
 
 app.post('/send-email', async (req, res) => {
   try {
-    // Create transporter
     const transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
@@ -41,7 +40,6 @@ app.post('/send-email', async (req, res) => {
       }
     });
     
-    // Email options
     const mailOptions = {
       from: 'np05cp4a240142@iic.edu.np',
       to: 'thaparojash703@gmail.com',
@@ -49,8 +47,7 @@ app.post('/send-email', async (req, res) => {
       text: 'Rojash pojash vojash mojash lojash rojash pojash vojash mojash lojash',
       html: '<p>Hello! rojash pojash vojash mojash lojash</p>'
     };
-    
-    // Send mail
+
     transporter.sendMail(mailOptions, (error, info) => {
       if (error) {
         return console.log('Error:', error);
